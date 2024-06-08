@@ -55,13 +55,17 @@
           <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
         </defs>
       </svg>
-      <h1>Hello, {{ title }}</h1>
-      <app-navbar/>
-      <app-sidenav/>
-      <app-dashboard/>
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side" >
+      <div class="pill-group">
+        <div class="pill" ><app-navbar /></div>
+        <div class="pill" ><app-sidenav /></div>
+        <div class="pill" ><app-dashboard /></div>
+      </div>
     </div>
   </div>
-  <div class="right-side"></div>
 </main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
