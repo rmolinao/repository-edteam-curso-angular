@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { EscuelaDigitalComponent } from '../../escuela-digital/escuela-digital.component';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
@@ -13,7 +13,8 @@ import { SidenavComponent } from '../../sidenav/sidenav.component';
     EscuelaDigitalComponent,
     NavbarComponent,
     SidenavComponent,
-    DashboardComponent
+    DashboardComponent,
+    RouterLink
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

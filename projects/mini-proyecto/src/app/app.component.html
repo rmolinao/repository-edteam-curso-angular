@@ -57,16 +57,18 @@
       </svg>
       <h1>{{ title }}</h1>
       <app-navbar />
+      <p><a  routerLink = "/sidenav">sidenav</a></p>
+      <p><a  routerLink = "/dashboard">dashboard</a></p>
     </div>
     <div class="divider"></div>
     <div class="right-side" >
       <div class="pill-group">
-        <div class="pill" ></div>
         <div class="pill" ><app-sidenav /></div>
         <div class="pill" ><app-dashboard /></div>
       </div>
     </div>
   </div>
+  <router-outlet />
 </main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
@@ -76,5 +78,3 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<router-outlet />
