@@ -26,9 +26,13 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-==== 10-JUN-202(RJM) ====
-
-al trabajar con rutas en la plantilla ..\src\app\app.component.html
-cuando utilizo en la etiquetas <a> la propiedad routerLink="" estoy trabajando el link sin recargar la pagina
-
-importante donde coloco la equieuta <router-outlet /> enla plantilla en este espacio se pintara el componente invocado en la ruta
++-------------------------- 10-JUN-202(RJM) -------------------------+
+|al trabajar con rutas en la plantilla ..\src\app\app.component.html |
+|cuando utilizo en la etiquetas <a> la propiedad routerLink=""       |
+|estoy trabajando el link sin recargar la pagina                     |
+|importante donde coloco la equieuta <router-outlet /> enla plantilla|
+|en este espacio se pintara el componente invocado en la ruta        |
++--------------------------------------------------------------------+
+| se importa bootstrap y font-someawe en el fichero                  |
+| projects\sub-proyecto2\src\styles.css                              |
++--------------------------------------------------------------------+
