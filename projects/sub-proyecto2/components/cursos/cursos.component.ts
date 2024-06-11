@@ -10,9 +10,10 @@ import { Component } from '@angular/core';
         {{titulo}}
       </div>
       <div class="card-body">
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr>
+              <th scope="col">#</th>
               <th scope="col">Logo</th>
               <th scope="col">Nombre</th>
               <th scope="col">Desripcion</th>
@@ -26,12 +27,19 @@ import { Component } from '@angular/core';
             @for (curso of cursos; track curso.id) {
               <tr>
                 <th scope="row">{{curso.id}}</th>
+                <td>
+                  <img
+                    [src]="curso.img"
+                    [title]="curso.name"
+                  >
+                </td>
                 <td>{{curso.name}}</td>
                 <td>{{curso.descripttion}}</td>
                 <td>{{curso.startDate}}</td>
                 <td>{{curso.price}}</td>
                 <td>{{curso.rating}}</td>
-                <td>{{curso.img}}</td>
+                <td>
+                </td>
               </tr>
             }
           </tbody>
@@ -39,7 +47,10 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles: ``
+  styles: `
+  .table.table-hover th+td img{
+    width:  40px;
+  }`
 })
 export class CursosComponent {
   titulo :string ='Lista de Cursos';
@@ -50,7 +61,7 @@ export class CursosComponent {
       descripttion:'lleva javaScript al siguiente Nivel ...',
       price:25.99,
       rating:4.5,
-      img:'assets/images/typescript.png'
+      img:'assets/images/angular.png'
     },
     { id:2,
       name:'Angular Desde Cero',
