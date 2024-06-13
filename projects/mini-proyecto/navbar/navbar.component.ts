@@ -15,12 +15,19 @@ import { GamesComponent } from '../games/games.component';
             alt="photo"
           >
         </p>
-        <app-games username="{{username}}"/>
+        <!-- importarte: paracapturar el evento se pasa por parametr $evente -->
+        <app-games
+          (addFavoriteEvent)="getFavorite($event)"
+          username="{{username}}"
+        />
       }@else {
         <p>Inicia sesion</p>
         <button (click)="isloggedIn=true">Log In</button>
       }
     </section>
+    @if(favGame){
+      <p>Tu juego favorito es {{favGame}}</p>
+    }
   `,
   styles: `
     section {
@@ -39,7 +46,11 @@ import { GamesComponent } from '../games/games.component';
 export class NavbarComponent {
   isloggedIn = false;
   username : string | null  = 'Rafael';
+  favGame : string = '';
   greet (){
     alert('!!! Hola');
   };
+  getFavorite(gameFavorite :string){
+    this.favGame = gameFavorite;
+  }
 }
