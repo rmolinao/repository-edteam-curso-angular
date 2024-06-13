@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { GamesComponent } from '../games/games.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [GamesComponent],
   template: `
     <section>
       @if (isloggedIn) {
@@ -14,6 +15,7 @@ import { Component } from '@angular/core';
             alt="photo"
           >
         </p>
+        <app-games/>
       }@else {
         <p>Inicia sesion</p>
         <button (click)="isloggedIn=true">Log In</button>
