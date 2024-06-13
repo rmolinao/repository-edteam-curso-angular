@@ -35,4 +35,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 +--------------------------------------------------------------------+
 | se importa bootstrap y font-someawe en el fichero                  |
 | projects\sub-proyecto2\src\styles.css                              |
-+--------------------------------------------------------------------+
++----------------------11-JUN-202(RJM)-------------------------------+
+|Pagina documentacion de eventos                                     |
+|https://developer.mozilla.org/en-US/docs/Web/Events                 |

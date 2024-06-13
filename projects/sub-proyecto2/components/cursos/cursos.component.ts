@@ -39,6 +39,14 @@ import { Component } from '@angular/core';
                 <td>{{curso.price}}</td>
                 <td>{{curso.rating}}</td>
                 <td>
+                  <span
+                    (click)="editarCurso(curso)"
+                    (mouseover)="onMouseOver($event)"
+                    (dblclick)="onBodleClick($event)"
+                  ><!-- para capturar los eventos coloco antes  del parametro de la funion  "$"-->
+                    <i class="fa fa-edit"></i>
+                  </span>
+                  <span (click)="eliminarCurso(curso)"><i class="fa fa-trash"></i></span>
                 </td>
               </tr>
             }
@@ -50,7 +58,14 @@ import { Component } from '@angular/core';
   styles: `
   .table.table-hover th+td img{
     width:  40px;
-  }`
+  }
+  .fa.fa-edit{
+    float: left;
+  }
+  .fa.fa-trash{
+    float: right;
+  }
+  `
 })
 export class CursosComponent {
   titulo :string ='Lista de Cursos';
@@ -72,4 +87,32 @@ export class CursosComponent {
       img:'assets/images/typescript.png'
     },
   ];
+
+  editarCurso(curso : Curso){
+    console.log(curso);
+  }
+  eliminarCurso(curso : Curso){
+    console.log(curso);
+  }
+  onBodleClick(event : MouseEvent){
+
+    if (event.type === "dblclick") {
+      console.log(event);
+    }
+  }
+
+  onMouseOver(event : MouseEvent){
+    if (event.type ==="mouseover") {
+      console.log('object :>> ', event);
+    }
+  }
 }
+interface Curso {
+  id:number,
+  name:string,
+  startDate:string,
+  descripttion:string,
+  price: number,
+  rating:number,
+  img:string
+};
