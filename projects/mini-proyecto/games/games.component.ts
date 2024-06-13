@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-games',
@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
   <ul>
     <p *ngIf="username">Juegos de {{username}}</p>
 
-    <li *ngFor="let game of games">
+    <li (click)="fav(game.name)"  *ngFor="let game of games">
       {{ game.name }}
     </li>
   </ul>
@@ -18,7 +18,8 @@ import { Component, Input } from '@angular/core';
 })
 export class GamesComponent {
   @Input() username? : string ;
-  games = [
+  @Output() addFavoriteEvent = new EventEmitter<string>();
+  games: Game[]  =  [
     { id:1,
       name:'Uncharted 4'
     },
@@ -29,4 +30,11 @@ export class GamesComponent {
       name:'Bloodborne'
     }
   ];
+  fav(gameName : string){
+    this.addFavoriteEvent.emit(gameName);
+  };
+}
+interface Game{
+  id:number,
+  name:string
 }
