@@ -15,7 +15,7 @@ import { GamesComponent } from '../games/games.component';
             alt="photo"
           >
         </p>
-        <app-games/>
+        <app-games username="{{username}}"/>
       }@else {
         <p>Inicia sesion</p>
         <button (click)="isloggedIn=true">Log In</button>
@@ -38,6 +38,7 @@ import { GamesComponent } from '../games/games.component';
 })
 export class NavbarComponent {
   isloggedIn = false;
+  username : string | null  = 'Rafael';
   greet (){
     alert('!!! Hola');
   };

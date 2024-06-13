@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-games',
@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
   imports: [CommonModule], //Importante para usar las directiva ngFor debo importar commonModule
   template: `
   <ul>
+    <p *ngIf="username">Juegos de {{username}}</p>
+
     <li *ngFor="let game of games">
       {{ game.name }}
     </li>
@@ -15,6 +17,7 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class GamesComponent {
+  @Input() username? : string ;
   games = [
     { id:1,
       name:'Uncharted 4'
