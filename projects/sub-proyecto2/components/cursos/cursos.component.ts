@@ -1,58 +1,67 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-cursos',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <div class="card">
       <div class="card-header">
         {{titulo}}
       </div>
-      <div class="card-body">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Logo</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Desripcion</th>
-              <th scope="col">Fecha Inicio</th>
-              <th scope="col">Preico</th>
-              <th scope="col">Rating</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (curso of cursos; track curso.id) {
+      @if (cursos && cursos.length > 0) {
+        <div  class="card-body">
+          <table class="table table-hover">
+            <thead>
               <tr>
-                <th scope="row">{{curso.id}}</th>
-                <td>
-                  <img
-                    [src]="curso.img"
-                    [title]="curso.name"
-                  >
-                </td>
-                <td>{{curso.name}}</td>
-                <td>{{curso.descripttion}}</td>
-                <td>{{curso.startDate}}</td>
-                <td>{{curso.price}}</td>
-                <td>{{curso.rating}}</td>
-                <td>
-                  <span
-                    (click)="editarCurso(curso)"
-                    (mouseover)="onMouseOver($event)"
-                    (dblclick)="onBodleClick($event)"
-                  ><!-- para capturar los eventos coloco antes  del parametro de la funion  "$"-->
-                    <i class="fa fa-edit"></i>
-                  </span>
-                  <span (click)="eliminarCurso(curso)"><i class="fa fa-trash"></i></span>
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">Logo</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Desripcion</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Preico</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Acciones</th>
               </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              @for (curso of cursos; track curso.id) {
+                <tr>
+                  <th scope="row">{{curso.id}}</th>
+                  <td>
+                    <img
+                      [src]="curso.img"
+                      [title]="curso.name"
+                    >
+                  </td>
+                  <td>{{curso.name}}</td>
+                  <td>{{curso.descripttion}}</td>
+                  <td>{{curso.startDate}}</td>
+                  <td>{{curso.price}}</td>
+                  <td>{{curso.rating}}</td>
+                  <td>
+                    <span
+                      (click)="editarCurso(curso)"
+                      (mouseover)="onMouseOver($event)"
+                      (dblclick)="onBodleClick($event)"
+                    ><!-- para capturar los eventos coloco antes  del parametro de la funion  "$"-->
+                      <i class="fa fa-edit"></i>
+                    </span>
+                    <span (click)="eliminarCurso(curso)"><i class="fa fa-trash"></i></span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      @else{
+        <div class="card-body">
+          <div class="alert alert-warning" role="alert">
+            No hay cursos disponible
+          </div>
+        </div>
+      }
     </div>
   `,
   styles: `
@@ -69,7 +78,8 @@ import { Component } from '@angular/core';
 })
 export class CursosComponent {
   titulo :string ='Lista de Cursos';
-  cursos:any = [
+  elimina:boolean = true;
+  cursos:Curso[]  = [
     { id:1,
       name:'TypeSrcipt Desde Cero',
       startDate:'August 10, 2009',
@@ -87,6 +97,21 @@ export class CursosComponent {
       img:'assets/images/typescript.png'
     },
   ];
+
+  constructor(){
+    if (this.elimina) {
+      this.eliminarCursos();
+    }
+  }
+
+  eliminarCursos() :void {
+    setTimeout(() => {
+      console.log("se eliminan cursos");
+      if (this.cursos.length!== 0) {
+        this.cursos =  [];
+      }
+    }, 5000);
+  }
 
   editarCurso(curso : Curso){
     console.log(curso);
