@@ -5,6 +5,13 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
+    <div [ngSwitch]="diaActual">
+      <p *ngSwitchCase="1">Iniciando la semana</p>
+      <p *ngSwitchCase="2">Vamos que se puede</p>
+      <p *ngSwitchCase="3">Media Semana</p>
+      <p *ngSwitchCase="5">Ya llega el fin de semana</p>
+      <p *ngSwitchDefault>Un dia radiante</p>
+    </div>
     <div class="card">
       <div class="card-header">
         {{titulo}}
@@ -78,7 +85,8 @@ import { CommonModule } from '@angular/common';
 })
 export class CursosComponent {
   titulo :string ='Lista de Cursos';
-  elimina:boolean = true;
+  elimina:boolean = false;
+  diaActual:number = 0;
   cursos:Curso[]  = [
     { id:1,
       name:'TypeSrcipt Desde Cero',
@@ -102,6 +110,9 @@ export class CursosComponent {
     if (this.elimina) {
       this.eliminarCursos();
     }
+    let fechaActual = new Date();
+    this.diaActual = fechaActual.getDay();
+    console.log(this.diaActual);
   }
 
   eliminarCursos() :void {
