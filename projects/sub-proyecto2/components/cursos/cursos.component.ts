@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CourseActionComponent } from "../course-action/course-action.component";
+import { Curso } from '../../interfaces/curso';
 @Component({
-  selector: 'app-cursos',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'app-cursos',
+    standalone: true,
+    imports: [CommonModule, CourseActionComponent,CourseActionComponent],
+    template: `
     <div [ngSwitch]="diaActual">
       <p *ngSwitchCase="1">Iniciando la semana</p>
       <p *ngSwitchCase="2">Vamos que se puede</p>
@@ -47,14 +49,7 @@ import { CommonModule } from '@angular/common';
                   <td>{{curso.price}}</td>
                   <td>{{curso.rating}}</td>
                   <td>
-                    <span
-                      (click)="editarCurso(curso)"
-                      (mouseover)="onMouseOver($event)"
-                      (dblclick)="onBodleClick($event)"
-                    ><!-- para capturar los eventos coloco antes  del parametro de la funion  "$"-->
-                      <i class="fa fa-edit"></i>
-                    </span>
-                    <span (click)="eliminarCurso(curso)"><i class="fa fa-trash"></i></span>
+                    <ed-course-action [curso]="curso"/>
                   </td>
                 </tr>
               }
@@ -71,7 +66,7 @@ import { CommonModule } from '@angular/common';
       }
     </div>
   `,
-  styles: `
+    styles: `
   .table.table-hover th+td img{
     width:  40px;
   }
@@ -124,31 +119,4 @@ export class CursosComponent {
     }, 5000);
   }
 
-  editarCurso(curso : Curso){
-    console.log(curso);
-  }
-  eliminarCurso(curso : Curso){
-    console.log(curso);
-  }
-  onBodleClick(event : MouseEvent){
-
-    if (event.type === "dblclick") {
-      console.log(event);
-    }
-  }
-
-  onMouseOver(event : MouseEvent){
-    if (event.type ==="mouseover") {
-      console.log('object :>> ', event);
-    }
-  }
 }
-interface Curso {
-  id:number,
-  name:string,
-  startDate:string,
-  descripttion:string,
-  price: number,
-  rating:number,
-  img:string
-};
