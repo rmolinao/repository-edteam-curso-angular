@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseActionComponent } from "../course-action/course-action.component";
 import { Curso } from '../../interfaces/curso';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-cursos',
     standalone: true,
@@ -89,6 +90,9 @@ export class CursosComponent {
   }
   onEditCurse(curso:Curso) {
     console.log('[cursos] onEdit =>',curso);
+    //Redireccion
+    this.router.navigate([`course/${curso.id}`]);
+
   }
   titulo :string ='Lista de Cursos';
   elimina:boolean = false;
@@ -112,7 +116,7 @@ export class CursosComponent {
     },
   ];
 
-  constructor(){
+  constructor(private router:Router){
     if (this.elimina) {
       this.eliminarCursos();
     }
