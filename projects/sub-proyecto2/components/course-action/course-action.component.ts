@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Curso } from '../../interfaces/curso';
 
 @Component({
@@ -27,11 +27,21 @@ import { Curso } from '../../interfaces/curso';
 export class CourseActionComponent implements OnInit {
   @Input()
   curso: Curso = <Curso>{};
+
+  @Output()
+  emitEdit :  EventEmitter<Curso> = new  EventEmitter<Curso>();
+
+  @Output()
+  emitDelete : EventEmitter<Curso> = new  EventEmitter<Curso>();
+
   editarCurso(curso : Curso){
-    console.log(curso);
+    // console.log(curso);
+    //con esta linea estamos propagando el Objeto Curso hacia el componenete Padre
+    this.emitEdit.emit(curso);
   }
   eliminarCurso(curso : Curso){
-    console.log(curso);
+    // console.log(curso);
+    this.emitDelete.emit(curso);
   }
   onBodleClick(event : MouseEvent){
 

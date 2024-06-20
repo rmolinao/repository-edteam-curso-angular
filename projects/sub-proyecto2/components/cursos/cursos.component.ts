@@ -49,7 +49,11 @@ import { Curso } from '../../interfaces/curso';
                   <td>{{curso.price}}</td>
                   <td>{{curso.rating}}</td>
                   <td>
-                    <ed-course-action [curso]="curso"/>
+                    <ed-course-action
+                      [curso]="curso"
+                      (emitEdit)="onEditCurse($event)"
+                      (emitDelete)="onDeleteCurse($event)"
+                    />
                   </td>
                 </tr>
               }
@@ -79,6 +83,13 @@ import { Curso } from '../../interfaces/curso';
   `
 })
 export class CursosComponent {
+  onDeleteCurse(curso:Curso) {
+  console.log('[cursos] onDelete =>',curso);
+  this.cursos = this.cursos.filter((cur :Curso) => cur.id !== curso.id );
+  }
+  onEditCurse(curso:Curso) {
+    console.log('[cursos] onEdit =>',curso);
+  }
   titulo :string ='Lista de Cursos';
   elimina:boolean = false;
   diaActual:number = 0;
@@ -89,7 +100,7 @@ export class CursosComponent {
       descripttion:'lleva javaScript al siguiente Nivel ...',
       price:25.99,
       rating:4.5,
-      img:'assets/images/angular.png'
+      img:'assets/images/typescript.png'
     },
     { id:2,
       name:'Angular Desde Cero',
@@ -97,7 +108,7 @@ export class CursosComponent {
       descripttion:'Aprende el framework frondend ...',
       price:25.99,
       rating:4.5,
-      img:'assets/images/typescript.png'
+      img:'assets/images/angular.png'
     },
   ];
 
