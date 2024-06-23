@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild,  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseActionComponent } from "../course-action/course-action.component";
 import { Curso } from '../../interfaces/curso';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'app-cursos',
     standalone: true,
-    imports: [CommonModule, CourseActionComponent,CourseActionComponent],
+    imports: [CommonModule, CourseActionComponent,CourseActionComponent, FormsModule],
     template: `
     <div [ngSwitch]="diaActual">
       <p *ngSwitchCase="1">Iniciando la semana</p>
@@ -21,6 +22,14 @@ import { Router } from '@angular/router';
       </div>
       @if (cursos && cursos.length > 0) {
         <div  class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-2">Filtrar por:</div>
+            <div class="col-md-6">
+              <input #filtro type="text"  [(ngModel)]="textoFiltrado">
+              <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
+              <span>{{textoFiltrado}}</span>
+            </div>
+          </div>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -83,7 +92,15 @@ import { Router } from '@angular/router';
   }
   `
 })
-export class CursosComponent {
+export class CursosComponent implements AfterViewInit{
+  @ViewChild('filtro', {static:false})
+  filtro : ElementRef = <ElementRef>{};
+  textoFiltrado:string = '';
+
+  ngAfterViewInit(): void {
+    this.filtro.nativeElement.value='Angular';
+  }
+
   onDeleteCurse(curso:Curso) {
   console.log('[cursos] onDelete =>',curso);
   this.cursos = this.cursos.filter((cur :Curso) => cur.id !== curso.id );
