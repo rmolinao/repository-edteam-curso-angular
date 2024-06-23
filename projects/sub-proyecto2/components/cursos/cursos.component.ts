@@ -26,8 +26,8 @@ import { FormsModule } from '@angular/forms';
             <div class="col-md-2">Filtrar por:</div>
             <div class="col-md-6">
               <input #filtro type="text"  [(ngModel)]="textoFiltrado">
+              <span class="px-4">{{textoFiltrado}}</span>
               <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
-              <span>{{textoFiltrado}}</span>
             </div>
           </div>
           <table class="table table-hover">
