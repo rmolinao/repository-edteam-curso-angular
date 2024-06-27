@@ -4,6 +4,7 @@ import { CourseActionComponent } from "../course-action/course-action.component"
 import { Curso } from '../../interfaces/curso';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CoursesService } from '../../services/courses.service';
 @Component({
     selector: 'app-cursos',
     standalone: true,
@@ -93,6 +94,22 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class CursosComponent implements AfterViewInit{
+
+  titulo :string ='Lista de Cursos';
+  elimina:boolean = false;
+  diaActual:number = 0;
+  cursos:Curso[]  = [];
+
+  constructor(private router:Router, private coursesServie:CoursesService){
+    this.cursos = this.coursesServie.getCourses();
+    if (this.elimina) {
+      this.eliminarCursos();
+    }
+    let fechaActual = new Date();
+    this.diaActual = fechaActual.getDay();
+    console.log(this.diaActual);
+  }
+
   @ViewChild('filtro', {static:false})
   filtro : ElementRef = <ElementRef>{};
   textoFiltrado:string = '';
@@ -105,41 +122,11 @@ export class CursosComponent implements AfterViewInit{
   console.log('[cursos] onDelete =>',curso);
   this.cursos = this.cursos.filter((cur :Curso) => cur.id !== curso.id );
   }
+
   onEditCurse(curso:Curso) {
     console.log('[cursos] onEdit =>',curso);
     //Redireccion
     this.router.navigate([`course/${curso.id}`]);
-
-  }
-  titulo :string ='Lista de Cursos';
-  elimina:boolean = false;
-  diaActual:number = 0;
-  cursos:Curso[]  = [
-    { id:1,
-      name:'TypeSrcipt Desde Cero',
-      startDate:'August 10, 2009',
-      descripttion:'lleva javaScript al siguiente Nivel ...',
-      price:25.99,
-      rating:4.5,
-      img:'assets/images/typescript.png'
-    },
-    { id:2,
-      name:'Angular Desde Cero',
-      startDate:'September 10, 2009',
-      descripttion:'Aprende el framework frondend ...',
-      price:25.99,
-      rating:4.5,
-      img:'assets/images/angular.png'
-    },
-  ];
-
-  constructor(private router:Router){
-    if (this.elimina) {
-      this.eliminarCursos();
-    }
-    let fechaActual = new Date();
-    this.diaActual = fechaActual.getDay();
-    console.log(this.diaActual);
   }
 
   eliminarCursos() :void {
