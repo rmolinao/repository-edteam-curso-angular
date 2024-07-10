@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild,  } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild,  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseActionComponent } from "../course-action/course-action.component";
 import { Curso } from '../../interfaces/curso';
@@ -26,7 +26,7 @@ import { CoursesService } from '../../services/courses.service';
           <div class="row mb-4">
             <div class="col-md-2">Filtrar por:</div>
             <div class="col-md-6">
-              <input #filtro type="text"  [(ngModel)]="textoFiltrado">
+              <input #filtro type="text"  [(ngModel)]="textoFiltrado"> <!--estoy apuntando a _textoFiltrado por el metodo set textoFiltrado() -->
               <span class="px-4">{{textoFiltrado}}</span>
               <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
             </div>
@@ -93,7 +93,7 @@ import { CoursesService } from '../../services/courses.service';
   }
   `
 })
-export class CursosComponent implements AfterViewInit{
+export class CursosComponent implements AfterViewInit, OnInit {
 
   titulo :string ='Lista de Cursos';
   elimina:boolean = false;
@@ -101,7 +101,6 @@ export class CursosComponent implements AfterViewInit{
   cursos:Curso[]  = [];
 
   constructor(private router:Router, private coursesServie:CoursesService){
-    this.cursos = this.coursesServie.getCourses();
     if (this.elimina) {
       this.eliminarCursos();
     }
@@ -109,10 +108,32 @@ export class CursosComponent implements AfterViewInit{
     this.diaActual = fechaActual.getDay();
     console.log(this.diaActual);
   }
+  ngOnInit(): void {
+    this.cursos = this.coursesServie.getCourses();
+    setTimeout(() => {
+      this.textoFiltrado = 'Angular' // estoy asignando el valor de angular al atributo _textoFiltrado atraves del  set textoFiltrado();
+    }, 6000);
+  }
 
   @ViewChild('filtro', {static:false})
   filtro : ElementRef = <ElementRef>{};
-  textoFiltrado:string = '';
+  private _textoFiltrado:string = '';
+
+  set textoFiltrado (texto : string)  {
+    console.log(texto);
+    this._textoFiltrado = texto;
+    this.cursos = texto? this.filtrarCurso(texto):this.coursesServie.getCourses();
+  }
+
+filtrarCurso(texto : string) : Curso[] {
+  return this.cursos.filter(
+    (curso:Curso) => curso.name.toLowerCase().indexOf(texto.toLowerCase()) >= 0
+  );
+}
+
+  get textoFiltrado () {
+    return this._textoFiltrado;
+  }
 
   ngAfterViewInit(): void {
     this.filtro.nativeElement.value='Angular';
