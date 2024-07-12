@@ -5,10 +5,11 @@ import { Curso } from '../../interfaces/curso';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../services/courses.service';
+import { HttpClientModule } from '@angular/common/http';
 @Component({
     selector: 'app-cursos',
     standalone: true,
-    imports: [CommonModule, CourseActionComponent,CourseActionComponent, FormsModule],
+    imports: [CommonModule, CourseActionComponent,FormsModule,HttpClientModule],
     template: `
     <div [ngSwitch]="diaActual">
       <p *ngSwitchCase="1">Iniciando la semana</p>
@@ -109,7 +110,9 @@ export class CursosComponent implements AfterViewInit, OnInit {
     console.log(this.diaActual);
   }
   ngOnInit(): void {
-    this.cursos = this.coursesServie.getCourses();
+    this.coursesServie.getCourses()
+      .subscribe((cursos: Curso[]) => this.cursos = cursos);
+    // this.cursos = this.coursesServie.getCourses();
     setTimeout(() => {
       this.textoFiltrado = 'Angular' // estoy asignando el valor de angular al atributo _textoFiltrado atraves del  set textoFiltrado();
     }, 6000);
@@ -122,7 +125,7 @@ export class CursosComponent implements AfterViewInit, OnInit {
   set textoFiltrado (texto : string)  {
     console.log(texto);
     this._textoFiltrado = texto;
-    this.cursos = texto? this.filtrarCurso(texto):this.coursesServie.getCourses();
+    // this.cursos = texto? this.filtrarCurso(texto):this.coursesServie.getCourses();
   }
 
 filtrarCurso(texto : string) : Curso[] {
@@ -136,7 +139,7 @@ filtrarCurso(texto : string) : Curso[] {
   }
 
   ngAfterViewInit(): void {
-    this.filtro.nativeElement.value='Angular';
+    // this.filtro.nativeElement.value='Angular';
   }
 
   onDeleteCurse(curso:Curso) {
