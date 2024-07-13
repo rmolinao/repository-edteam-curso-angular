@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild,  } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseActionComponent } from "../course-action/course-action.component";
 import { Curso } from '../../interfaces/curso';
@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../services/courses.service';
 import { HttpClientModule } from '@angular/common/http';
+import { EMPTY, catchError, of, tap } from 'rxjs';
 @Component({
-    selector: 'app-cursos',
-    standalone: true,
-    imports: [CommonModule, CourseActionComponent,FormsModule,HttpClientModule],
-    template: `
+  selector: 'app-cursos',
+  standalone: true,
+  imports: [CommonModule, CourseActionComponent, FormsModule, HttpClientModule],
+  template: `
     <div [ngSwitch]="diaActual">
       <p *ngSwitchCase="1">Iniciando la semana</p>
       <p *ngSwitchCase="2">Vamos que se puede</p>
@@ -18,6 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
       <p *ngSwitchCase="5">Ya llega el fin de semana</p>
       <p *ngSwitchDefault>Un dia radiante</p>
     </div>
+    <pre>
+      {{cursos | json}}
+    </pre>
     <div class="card">
       <div class="card-header">
         {{titulo}}
@@ -74,15 +78,24 @@ import { HttpClientModule } from '@angular/common/http';
         </div>
       }
       @else{
-        <div class="card-body">
+        @if(mensajeError){
+          <div class="card-body">
+          <div class="alert alert-danger" role="alert">
+            {{mensajeError}}
+          </div>
+        </div>
+        }@else {
+          <div class="card-body">
           <div class="alert alert-warning" role="alert">
             No hay cursos disponible
           </div>
         </div>
+        }
+
       }
     </div>
   `,
-    styles: `
+  styles: `
   .table.table-hover th+td img{
     width:  40px;
   }
@@ -96,12 +109,13 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class CursosComponent implements AfterViewInit, OnInit {
 
-  titulo :string ='Lista de Cursos';
-  elimina:boolean = false;
-  diaActual:number = 0;
-  cursos:Curso[]  = [];
+  titulo: string = 'Lista de Cursos';
+  elimina: boolean = false;
+  diaActual: number = 0;
+  cursos: Curso[] = [];
+  mensajeError: string = '';
 
-  constructor(private router:Router, private coursesServie:CoursesService){
+  constructor(private router: Router, private coursesServie: CoursesService) {
     if (this.elimina) {
       this.eliminarCursos();
     }
@@ -111,6 +125,14 @@ export class CursosComponent implements AfterViewInit, OnInit {
   }
   ngOnInit(): void {
     this.coursesServie.getCourses()
+      .pipe(
+        tap(cursos => console.log('Cursos', cursos)),
+        catchError(error => {
+          this.mensajeError = error;
+          //catch and replace
+          return EMPTY;
+        })
+      )
       .subscribe((cursos: Curso[]) => this.cursos = cursos);
     // this.cursos = this.coursesServie.getCourses();
     setTimeout(() => {
@@ -118,23 +140,23 @@ export class CursosComponent implements AfterViewInit, OnInit {
     }, 6000);
   }
 
-  @ViewChild('filtro', {static:false})
-  filtro : ElementRef = <ElementRef>{};
-  private _textoFiltrado:string = '';
+  @ViewChild('filtro', { static: false })
+  filtro: ElementRef = <ElementRef>{};
+  private _textoFiltrado: string = '';
 
-  set textoFiltrado (texto : string)  {
+  set textoFiltrado(texto: string) {
     console.log(texto);
     this._textoFiltrado = texto;
     // this.cursos = texto? this.filtrarCurso(texto):this.coursesServie.getCourses();
   }
 
-filtrarCurso(texto : string) : Curso[] {
-  return this.cursos.filter(
-    (curso:Curso) => curso.name.toLowerCase().indexOf(texto.toLowerCase()) >= 0
-  );
-}
+  filtrarCurso(texto: string): Curso[] {
+    return this.cursos.filter(
+      (curso: Curso) => curso.name.toLowerCase().indexOf(texto.toLowerCase()) >= 0
+    );
+  }
 
-  get textoFiltrado () {
+  get textoFiltrado() {
     return this._textoFiltrado;
   }
 
@@ -142,22 +164,22 @@ filtrarCurso(texto : string) : Curso[] {
     // this.filtro.nativeElement.value='Angular';
   }
 
-  onDeleteCurse(curso:Curso) {
-  console.log('[cursos] onDelete =>',curso);
-  this.cursos = this.cursos.filter((cur :Curso) => cur.id !== curso.id );
+  onDeleteCurse(curso: Curso) {
+    console.log('[cursos] onDelete =>', curso);
+    this.cursos = this.cursos.filter((cur: Curso) => cur.id !== curso.id);
   }
 
-  onEditCurse(curso:Curso) {
-    console.log('[cursos] onEdit =>',curso);
+  onEditCurse(curso: Curso) {
+    console.log('[cursos] onEdit =>', curso);
     //Redireccion
     this.router.navigate([`course/${curso.id}`]);
   }
 
-  eliminarCursos() :void {
+  eliminarCursos(): void {
     setTimeout(() => {
       console.log("se eliminan cursos");
-      if (this.cursos.length!== 0) {
-        this.cursos =  [];
+      if (this.cursos.length !== 0) {
+        this.cursos = [];
       }
     }, 5000);
   }
