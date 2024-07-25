@@ -13,7 +13,7 @@ export class CoursesService {
   // constructor() { }
 
   getCourses():Observable<Curso[]> {
-    return this.httpCliente.get<Curso[]>('assets/api/courses/coursess.json')
+    return this.httpCliente.get<Curso[]>('assets/api/courses/courses.json')
       .pipe(
         catchError(this.manejarError)
       );

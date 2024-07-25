@@ -19,9 +19,6 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
       <p *ngSwitchCase="5">Ya llega el fin de semana</p>
       <p *ngSwitchDefault>Un dia radiante</p>
     </div>
-    <pre>
-      {{cursos | json}}
-    </pre>
     <div class="card">
       <div class="card-header">
         {{titulo}}
@@ -50,7 +47,7 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
               </tr>
             </thead>
             <tbody>
-              @for (curso of cursos; track curso.id) {
+              @for (curso of cursosFiltrados; track curso.id) {
                 <tr>
                   <th scope="row">{{curso.id}}</th>
                   <td>
@@ -113,6 +110,7 @@ export class CursosComponent implements AfterViewInit, OnInit {
   elimina: boolean = false;
   diaActual: number = 0;
   cursos: Curso[] = [];
+  cursosFiltrados: Curso[] = [];
   mensajeError: string = '';
 
   constructor(private router: Router, private coursesServie: CoursesService) {
@@ -123,17 +121,23 @@ export class CursosComponent implements AfterViewInit, OnInit {
     this.diaActual = fechaActual.getDay();
     console.log(this.diaActual);
   }
-  ngOnInit(): void {
+  getCursos(){
     this.coursesServie.getCourses()
       .pipe(
-        tap(cursos => console.log('Cursos', cursos)),
         catchError(error => {
           this.mensajeError = error;
           //catch and replace
           return EMPTY;
         })
       )
-      .subscribe((cursos: Curso[]) => this.cursos = cursos);
+      .subscribe((cursos: Curso[]) => {
+        this.cursos = cursos;
+        this.cursosFiltrados = cursos;
+      });
+  }
+
+  ngOnInit(): void {
+    this.getCursos();
     // this.cursos = this.coursesServie.getCourses();
     setTimeout(() => {
       this.textoFiltrado = 'Angular' // estoy asignando el valor de angular al atributo _textoFiltrado atraves del  set textoFiltrado();
@@ -147,11 +151,12 @@ export class CursosComponent implements AfterViewInit, OnInit {
   set textoFiltrado(texto: string) {
     console.log(texto);
     this._textoFiltrado = texto;
+    this.filtrarCurso(texto);
     // this.cursos = texto? this.filtrarCurso(texto):this.coursesServie.getCourses();
   }
 
-  filtrarCurso(texto: string): Curso[] {
-    return this.cursos.filter(
+  filtrarCurso(texto: string): void {
+    this.cursosFiltrados = this.cursos.filter(
       (curso: Curso) => curso.name.toLowerCase().indexOf(texto.toLowerCase()) >= 0
     );
   }
@@ -165,8 +170,9 @@ export class CursosComponent implements AfterViewInit, OnInit {
   }
 
   onDeleteCurse(curso: Curso) {
-    console.log('[cursos] onDelete =>', curso);
+    //console.log('[cursos] onDelete =>', curso);
     this.cursos = this.cursos.filter((cur: Curso) => cur.id !== curso.id);
+    this.cursosFiltrados = this.cursos;
   }
 
   onEditCurse(curso: Curso) {
