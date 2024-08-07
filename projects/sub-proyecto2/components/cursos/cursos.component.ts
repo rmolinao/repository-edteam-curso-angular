@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, } from '@angul
 import { CommonModule } from '@angular/common';
 import { CourseActionComponent } from "../course-action/course-action.component";
 import { Curso } from '../../interfaces/curso';
-import { Router } from '@angular/router';
+import { Router,RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../services/courses.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
 @Component({
   selector: 'app-cursos',
   standalone: true,
-  imports: [CommonModule, CourseActionComponent, FormsModule, HttpClientModule],
+  imports: [CommonModule, CourseActionComponent, FormsModule, HttpClientModule, RouterModule],
   template: `
     <div [ngSwitch]="diaActual">
       <p *ngSwitchCase="1">Iniciando la semana</p>
@@ -33,7 +33,11 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
               <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary" type="button">Nuevo Curso</button>
+              <button class="btn btn-primary"
+                      type="button"
+                      [routerLink]="['/course/add']"
+              >Nuevo Curso
+              </button>
             </div>
           </div>
           <table class="table table-hover">
