@@ -181,7 +181,7 @@ export class CursosComponent implements AfterViewInit, OnInit {
   onEditCurse(curso: Curso) {
     console.log('[cursos] onEdit =>', curso);
     //Redireccion
-    this.router.navigate([`course/${curso.id}`]);
+    this.router.navigate([`course/edit/${curso.id}`]);
   }
 
   eliminarCursos(): void {
