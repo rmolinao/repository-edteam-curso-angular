@@ -27,10 +27,13 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
         <div  class="card-body">
           <div class="row mb-4">
             <div class="col-md-2">Filtrar por:</div>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <input #filtro type="text"  [(ngModel)]="textoFiltrado"> <!--estoy apuntando a _textoFiltrado por el metodo set textoFiltrado() -->
               <span class="px-4">{{textoFiltrado}}</span>
               <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary" type="button">Nuevo Curso</button>
             </div>
           </div>
           <table class="table table-hover">
