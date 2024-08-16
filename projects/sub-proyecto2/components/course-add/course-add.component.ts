@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-course-add',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   template: `
 <div class="container-md ">
   <div class="row justify-content-center align-items-center">
@@ -11,7 +12,7 @@ import { Component } from '@angular/core';
       <div class="card mt-4" >
         <div class="card-header">Nuevo Curso</div>
         <div class="card-body">
-          <form>
+          <form #fomrAdd="ngForm">
 
             <div class=" form-group mb-3">
               <label for="name" class="form-label">Nombre</label>
@@ -32,6 +33,12 @@ import { Component } from '@angular/core';
             </div>
             <button type="submit" class="btn btn-primary">Crear Curso</button>
           </form>
+          <div>
+            <pre>
+              Form.valid:{{fomrAdd.form.valid}}
+              Form.invalid:{{fomrAdd.form.invalid}}
+            </pre>
+          </div>
         </div>
       </div>
     </div>
