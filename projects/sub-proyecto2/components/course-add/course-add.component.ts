@@ -57,8 +57,20 @@ import { FormsModule } from '@angular/forms';
               </form>
               <div>
                 <pre>
+              <!-- con este estado varifico si el formulario es valido -->
               Form.valid:{{ fomrAdd.form.valid }}
-              Form.invalid:{{ fomrAdd.form.invalid }}
+              Form.invalid:{{ fomrAdd.form.invalid }}<!-- funcion inversa -->
+
+              <!-- con este estado varifico si ha tocado o enfocado el formulario  -->
+              Form.touched:{{ fomrAdd.form.touched }}
+              Form.untouched:{{ fomrAdd.form.untouched }}<!-- funcion inversa -->
+
+              <!-- con este estado varifico si ha  realizado cambios al formulario  -->
+              Form.pristine:{{ fomrAdd.form.pristine }}
+              Form.dirty:{{ fomrAdd.form.dirty }}<!-- funcion inversa -->
+
+              <!-- importante solo se dectecta el cambio de estado en los input que asociados a ngModel -->
+
             </pre>
               </div>
             </div>
