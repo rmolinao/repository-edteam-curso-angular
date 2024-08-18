@@ -1,9 +1,9 @@
 export interface Curso {
-    id:number,
+    id?:number,
     name:string,
-    startDate:string,
+    startDate?:string,
     descripttion:string,
     price: number,
-    rating:number,
+    rating?:number,
     img:string
 }

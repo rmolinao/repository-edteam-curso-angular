@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild, ElementRef} from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
+import { Curso } from '../../interfaces/curso';
 
 @Component({
   selector: 'app-course-add',
@@ -21,8 +22,23 @@ import { FormsModule } from '@angular/forms';
                     id="name"
                     aria-describedby="emailHelp"
                     name="name"
-                    [(ngModel)]="nombre"
+                    placeholder="Ingrese Nombre"
+                    [(ngModel)]="model.name"
                     #name="ngModel"
+                    required
+                  />
+                </div>
+                <div class=" form-group mb-3">
+                  <label for="name" class="form-label">Descripcion</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="descripttion"
+                    aria-describedby="emailHelp"
+                    name="descripttion"
+                    placeholder="Descripcion"
+                    [(ngModel)]="model.descripttion"
+                    #descripttion="ngModel"
                     required
                   />
                 </div>
@@ -33,6 +49,11 @@ import { FormsModule } from '@angular/forms';
                     class="form-control"
                     id="price"
                     aria-describedby="emailHelp"
+                    name="price"
+                    placeholder="Precio"
+                    [(ngModel)]="model.price"
+                    #price="ngModel"
+                    required
                   />
                 </div>
                 <div class=" form-group mb-3">
@@ -42,6 +63,10 @@ import { FormsModule } from '@angular/forms';
                     class="form-control"
                     id="imageUrl"
                     aria-describedby="emailHelp"
+                    name="imageUrl"
+                    placeholder="Url de imagen"
+                    [(ngModel)]="model.img"
+                    #imageUrl="ngModel"
                   />
                 </div>
 
@@ -51,7 +76,11 @@ import { FormsModule } from '@angular/forms';
                     >Curso Activo</label
                   >
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  (click)="onSubmit()"
+                  >
                   Crear Curso
                 </button>
               </form>
@@ -82,9 +111,26 @@ import { FormsModule } from '@angular/forms';
   styles: ``,
 })
 export class CourseAddComponent {
-  nombre: string ='';
-  constructor(){
+  model: Curso = {
+    name: '',
+    descripttion: '',
+    price: 0,
+    img: ''
+  };
 
+  @ViewChild('formAdd', { static: false }) formAdd!: ElementRef;
+  form: FormControl = new FormControl();
+
+  constructor() {
+
+  }
+
+  onSubmit(){
+    console.log('onSubmit',this.form);
+    if (this.form.valid) {
+      console.log('model',this.model);
+      this.form.reset();
+    }
   }
 
 }
