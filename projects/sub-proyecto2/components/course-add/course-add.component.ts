@@ -1,11 +1,12 @@
 import { Component, ViewChild, ElementRef} from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { Curso } from '../../interfaces/curso';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-course-add',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   template: `
     <div class="container-md ">
       <div class="row justify-content-center align-items-center">
@@ -15,7 +16,7 @@ import { Curso } from '../../interfaces/curso';
             <div class="card-body">
               <form #fomrAdd="ngForm">
                 <div class=" form-group mb-3">
-                  <label for="name" class="form-label">Nombre</label>
+                  <label for="name" class="form-label">Nombre *</label>
                   <input
                     type="text"
                     class="form-control"
@@ -27,9 +28,12 @@ import { Curso } from '../../interfaces/curso';
                     #name="ngModel"
                     required
                   />
+                  <div *ngIf="name.invalid && (name.dirty||name.touched)" class="mt-4 alert alert-danger" role="alert">
+                    Nombre es Requerido!
+                  </div>
                 </div>
                 <div class=" form-group mb-3">
-                  <label for="name" class="form-label">Descripcion</label>
+                  <label for="name" class="form-label">Descripcion *</label>
                   <input
                     type="text"
                     class="form-control"
@@ -39,11 +43,22 @@ import { Curso } from '../../interfaces/curso';
                     placeholder="Descripcion"
                     [(ngModel)]="model.descripttion"
                     #descripttion="ngModel"
+                    minlength="5"
                     required
                   />
+                  @if (descripttion.invalid&&(descripttion.dirty||descripttion.touched)) {
+                    <div *ngIf="descripttion?.errors?.['required']" class="mt-4 alert alert-danger" role="alert">
+                      Nombre es Requerido
+                    </div>
+
+                    <div *ngIf="descripttion?.errors?.['minlength']" class="mt-4 alert alert-danger" role="alert">
+                      La descripcion debe tener al menos 5 caracteres
+                    </div>
+                    <Pre>{{descripttion.errors | json}}</Pre>
+                  }
                 </div>
                 <div class=" form-group mb-3">
-                  <label for="price" class="form-label">Precio</label>
+                  <label for="price" class="form-label">Precio *</label>
                   <input
                     type="number"
                     class="form-control"
@@ -55,6 +70,9 @@ import { Curso } from '../../interfaces/curso';
                     #price="ngModel"
                     required
                   />
+                  <div *ngIf="price.invalid && (price.dirty||price.touched)" class="mt-4 alert alert-danger" role="alert">
+                    Precio es Requerido
+                  </div>
                 </div>
                 <div class=" form-group mb-3">
                   <label for="imageUrl" class="form-label">Url de imagen</label>
@@ -80,6 +98,7 @@ import { Curso } from '../../interfaces/curso';
                   type="submit"
                   class="btn btn-primary"
                   (click)="onSubmit()"
+                  [disabled]="fomrAdd.form.invalid||fomrAdd.form.untouched"
                   >
                   Crear Curso
                 </button>
