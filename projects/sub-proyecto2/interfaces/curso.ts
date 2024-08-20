@@ -3,7 +3,7 @@ export interface Curso {
     name:string,
     startDate?:string,
     descripttion:string,
-    price: number,
+    price?: number,
     rating?:number,
     img:string
 }

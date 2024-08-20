@@ -127,13 +127,15 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-  styles: ``,
+  styles: `
+  .ng-valid[required], ng-valid.required{
+    border:1px solid green;
+  }`,
 })
 export class CourseAddComponent {
   model: Curso = {
     name: '',
     descripttion: '',
-    price: 0,
     img: ''
   };
 
