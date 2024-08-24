@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-course-add-reactive',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="container-md ">
       <div class="row justify-content-center align-items-center">
@@ -11,7 +12,7 @@ import { Component } from '@angular/core';
           <div class="card mt-4">
             <div class="card-header">Nuevo Curso</div>
             <div class="card-body">
-              <form >
+              <form [formGroup]="courseAddForm" (ngSubmit)="onSubmit()">
                 <div class=" form-group mb-3">
                   <label for="name" class="form-label">Nombre *</label>
                   <input
@@ -21,6 +22,7 @@ import { Component } from '@angular/core';
                     aria-describedby="emailHelp"
                     name="name"
                     placeholder="Ingrese Nombre"
+                    [formControlName]="'name'"
                     required
                   />
                   <!-- <div  class="mt-4 alert alert-danger" role="alert">
@@ -37,6 +39,7 @@ import { Component } from '@angular/core';
                     name="descripttion"
                     placeholder="Descripcion"
                     minlength="5"
+                    formControlName="descripttion"
                     required
                   />
                   <!-- @if (descripttion.invalid&&(descripttion.dirty||descripttion.touched)) {
@@ -59,6 +62,7 @@ import { Component } from '@angular/core';
                     aria-describedby="emailHelp"
                     name="price"
                     placeholder="Precio"
+                    formControlName="price"
                     required
                   />
                   <!-- <div *ngIf="price.invalid && (price.dirty||price.touched)" class="mt-4 alert alert-danger" role="alert">
@@ -74,6 +78,7 @@ import { Component } from '@angular/core';
                     aria-describedby="emailHelp"
                     name="imageUrl"
                     placeholder="Url de imagen"
+                    formControlName="imageUrl"
                   />
                 </div>
 
@@ -83,23 +88,32 @@ import { Component } from '@angular/core';
                     >Curso Activo</label
                   >
                 </div>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  >
+                <button type="submit" class="btn btn-primary">
                   Crear Curso
                 </button>
               </form>
-              <div>
-              </div>
+              <div></div>
             </div>
           </div>
         </div>
       </div>
     </div>
   `,
-  styles: ``
+  styles: ``,
 })
-export class CourseAddReactiveComponent {
+export class CourseAddReactiveComponent implements OnInit {
+  courseAddForm!: FormGroup;
 
+  constructor(){}
+  ngOnInit(){
+    this.courseAddForm = new FormGroup({
+      name : new FormControl('Angular desde Cero'),
+      descripttion: new FormControl(null),
+      price : new FormControl(null),
+      imageUrl: new FormControl(null)
+    });
+  }
+  onSubmit(){
+    console.log('submit',this.courseAddForm);
+  }
 }
