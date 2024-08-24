@@ -26,19 +26,35 @@ import { EMPTY, catchError, of, tap } from 'rxjs';
       @if (cursos && cursos.length > 0) {
         <div  class="card-body">
           <div class="row mb-4">
-            <div class="col-md-2">Filtrar por:</div>
-            <div class="col-md-8">
+            <div class="col-md-1">Filtrar por:</div>
+            <div class="col-md-9">
               <input #filtro type="text"  [(ngModel)]="textoFiltrado"> <!--estoy apuntando a _textoFiltrado por el metodo set textoFiltrado() -->
-              <span class="px-4">{{textoFiltrado}}</span>
+              <span class="px-8">{{textoFiltrado}}</span>
               <!-- para que funcione la diretiva [(ngModel)] se debe Importar el modulo FormsModule en el componente -->
             </div>
-            <div class="col-md-2">
-              <button class="btn btn-primary"
-                      type="button"
-                      [routerLink]="['/course/add']"
-              >Nuevo Curso
-              </button>
-            </div>
+
+            @if(form_template){
+              <div class="col-md-1">
+                <button class="btn btn-primary"
+                        type="button"
+                        [routerLink]="['/course/add']"
+                >
+                Nuevo Curso
+                </button>
+              </div>
+            }
+
+            @if(form_reactive){
+              <div class="col-md-1">
+                <button class="btn btn-primary"
+                        type="button"
+                        [routerLink]="['/course/add-reactive']"
+                >
+                Nuevo Curso
+                </button>
+              </div>
+            }
+
           </div>
           <table class="table table-hover">
             <thead>
@@ -119,6 +135,8 @@ export class CursosComponent implements AfterViewInit, OnInit {
   cursos: Curso[] = [];
   cursosFiltrados: Curso[] = [];
   mensajeError: string = '';
+  form_reactive:boolean = true;
+  form_template:boolean = false;
 
   constructor(private router: Router, private coursesServie: CoursesService) {
     if (this.elimina) {
