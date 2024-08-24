@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-course-add-reactive',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   template: `
     <div class="container-md ">
       <div class="row justify-content-center align-items-center">
@@ -23,11 +23,16 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
                     name="name"
                     placeholder="Ingrese Nombre"
                     [formControlName]="'name'"
-                    required
                   />
-                  <!-- <div  class="mt-4 alert alert-danger" role="alert">
+
+                  <div
+                    *ngIf="courseAddForm.get('name')!.invalid
+                          && (courseAddForm.get('name')!.dirty
+                          ||courseAddForm.get('name')!.touched)"
+
+                    class="mt-4 alert alert-danger" role="alert">
                     Nombre es Requerido!
-                  </div> -->
+                  </div>
                 </div>
                 <div class=" form-group mb-3">
                   <label for="name" class="form-label">Descripcion *</label>
@@ -40,18 +45,20 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
                     placeholder="Descripcion"
                     minlength="5"
                     formControlName="descripttion"
-                    required
                   />
-                  <!-- @if (descripttion.invalid&&(descripttion.dirty||descripttion.touched)) {
-                    <div *ngIf="descripttion?.errors?.['required']" class="mt-4 alert alert-danger" role="alert">
+
+                  @if (courseAddForm.get('descripttion')!.invalid&&(courseAddForm.get('descripttion')!.dirty||courseAddForm.get('descripttion')!.touched)) {
+                    <div
+                      *ngIf="courseAddForm.get('descripttion')!.getError('required')"
+                      class="mt-4 alert alert-danger" role="alert">
                       Nombre es Requerido
                     </div>
 
-                    <div *ngIf="descripttion?.errors?.['minlength']" class="mt-4 alert alert-danger" role="alert">
+                    <div *ngIf="courseAddForm.get('descripttion')!.getError('minlength')" class="mt-4 alert alert-danger" role="alert">
                       La descripcion debe tener al menos 5 caracteres
                     </div>
-                    <Pre>{{descripttion.errors | json}}</Pre>
-                  } -->
+                    <Pre>{{courseAddForm.get('descripttion')!.errors | json}}</Pre>
+                  }
                 </div>
                 <div class=" form-group mb-3">
                   <label for="price" class="form-label">Precio *</label>
@@ -63,11 +70,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
                     name="price"
                     placeholder="Precio"
                     formControlName="price"
-                    required
                   />
-                  <!-- <div *ngIf="price.invalid && (price.dirty||price.touched)" class="mt-4 alert alert-danger" role="alert">
+                  <div *ngIf="price.invalid && (price.dirty||price.touched)" class="mt-4 alert alert-danger" role="alert">
                     Precio es Requerido
-                  </div> -->
+                  </div>
                 </div>
                 <div class=" form-group mb-3">
                   <label for="imageUrl" class="form-label">Url de imagen</label>
@@ -88,7 +94,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
                     >Curso Activo</label
                   >
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="submit"
+                  [disabled]="courseAddForm.invalid || courseAddForm.untouched"
+                  class="btn btn-primary">
                   Crear Curso
                 </button>
               </form>
@@ -107,13 +116,19 @@ export class CourseAddReactiveComponent implements OnInit {
   constructor(){}
   ngOnInit(){
     this.courseAddForm = new FormGroup({
-      name : new FormControl('Angular desde Cero'),
-      descripttion: new FormControl(null),
-      price : new FormControl(null),
+      name : new FormControl(null,Validators.required),
+      descripttion: new FormControl(null,[
+        Validators.required,
+        Validators.maxLength(5),
+      ]),
+      price : new FormControl(null,Validators.required),
       imageUrl: new FormControl(null)
     });
   }
   onSubmit(){
     console.log('submit',this.courseAddForm);
+  }
+  get price(){
+    return this.courseAddForm.get('price')!;
   }
 }
