@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-course-add-reactive',
@@ -71,9 +71,14 @@ import { CommonModule } from '@angular/common';
                     placeholder="Precio"
                     formControlName="price"
                   />
-                  <div *ngIf="price.invalid && (price.dirty||price.touched)" class="mt-4 alert alert-danger" role="alert">
-                    Precio es Requerido
-                  </div>
+                  @if(price.invalid && (price.dirty||price.touched)){
+                    <div *ngIf="price?.errors?.['required']" class="mt-4 alert alert-danger" role="alert">
+                      Precio es Requerido
+                    </div>
+                    <div  *ngIf="price?.errors?.['minPrice']" class="mt-4 alert alert-danger" role="alert">
+                      Precio es debe ser mayor a $10
+                    </div>
+                  }
                 </div>
                 <div class=" form-group mb-3">
                   <label for="imageUrl" class="form-label">Url de imagen</label>
@@ -121,7 +126,10 @@ export class CourseAddReactiveComponent implements OnInit {
         Validators.required,
         Validators.maxLength(5),
       ]),
-      price : new FormControl(null,Validators.required),
+      price : new FormControl(null,[
+        Validators.required,
+        this.minPrice(10)
+      ]),
       imageUrl: new FormControl(null)
     });
   }
@@ -130,5 +138,17 @@ export class CourseAddReactiveComponent implements OnInit {
   }
   get price(){
     return this.courseAddForm.get('price')!;
+  }
+  minPrice(minPrice_p:number) :ValidatorFn {
+    return (control:AbstractControl):{[key: string] : boolean} | null  => {
+      if (control.value != undefined && control.value <= minPrice_p) {
+        return {
+          'minPrice' : true
+        };
+      } else {
+        return null;
+      }
+
+    }
   }
 }
