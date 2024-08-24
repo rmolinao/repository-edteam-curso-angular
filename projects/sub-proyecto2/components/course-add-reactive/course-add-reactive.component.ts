@@ -132,6 +132,24 @@ export class CourseAddReactiveComponent implements OnInit {
       ]),
       imageUrl: new FormControl(null)
     });
+
+    //Observables
+    if (false) {
+      this.courseAddForm.valueChanges
+        .subscribe(value => console.log('courseAddForm (value):>> ', value));
+    }
+    if (false) {
+      this.courseAddForm.statusChanges
+        .subscribe(value => console.log('courseAddForm (status) :>> ', value));
+    }
+    if (true) {
+      this.price.valueChanges
+        .subscribe(value => console.log('price (value) :>> ', value));
+    }
+    if (true) {
+      this.price.statusChanges
+        .subscribe(value => console.log('price (status) :>> ', value));
+    }
   }
   onSubmit(){
     console.log('submit',this.courseAddForm);
